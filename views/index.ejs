@@ -7,8 +7,22 @@
     <link href="styles/main.css" rel="stylesheet">
 </head>
 <body>
-    <div>
-        <h1>Hello World</h1>
+    <div class="header">
+        <h1>PixelStats</h1>
+    </div>
+
+    <div class="body">
+        <form action="/submit" method="post">
+            <label for="username">Enter your Minecraft username:</label>
+            <input id="username" name="username">
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>Made in 🇨🇦 By Jake Dubeau <%=new Date().getFullYear()%></p>
+        <p>Hypixel data provided by </p>
+        <p>Minecraft player information fetched from <a href="https://playerdb.co/">PlayerDB</a></p>
+        <p>Minecraft content and materials are trademarks and copyrights of Mojang AB.</p>
     </div>
 </body>
 </html>

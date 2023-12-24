@@ -20,12 +20,30 @@
 
     <div class="text-area">
         <% if(locals.hypixel){ %>
-            <p><%=locals.hypixel%></p>
+            <h2>
+                <% if(hypixel.player.rank){ %>
+                   [<%=hypixel.player.rank%>]
+                <% }%>
+                <%=hypixel.player.displayname%>
+            </h2>
+            <h3><%=hypixel.player.newPackageRank%></h3>
+
+            <p>There are <%=hypixel.length%> entries</p>
+            <p>--- data ---</p>
+            <ul>
+            <% for (let key in hypixel) { %>
+                <li><%= key %>: <%= hypixel[key] %></li>
+                <% if(hypixel[key][1]) { %>
+                    <p>more data</p>
+                <% } %>
+               
+            <% } %>
+            </ul>
         <% } %>
     </div>
 
     <div class="footer">
-        <p>Made in 🇨🇦 By <a href="https://github.com/StinkyDubeau/">Jake Dubeau</a> <%=new Date().getFullYear()%></p>
+        <p>Made in 🇨🇦 by <a href="https://github.com/StinkyDubeau/">Jake Dubeau</a> <%=new Date().getFullYear()%></p>
         <p>Hypixel stats from <a href="https://api.hypixel.net/">their API</a>, username processing by <a href="https://playerdb.co/">PlayerDB</a>.</p>
         <p>Minecraft content and materials are trademarks and copyrights of Mojang AB. This project is not affiliated with Mojang AB.</p>
     </div>

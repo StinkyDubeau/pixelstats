@@ -21,8 +21,6 @@ const CONFIG = {
     }
 }
 
-
-
 APP.use(express.static("./public"));
 APP.use(bodyParser.urlencoded({extended: true}));
 APP.use(getUUID);
@@ -47,6 +45,7 @@ function getKey(path){ // Returns text from 'path'. Creates 'path' if it doesn't
       }
     return key;
 }
+
 async function getUUID(req, res, next){
     if(req.body.username){
         try{
@@ -66,7 +65,9 @@ async function getStats(req, res, next){
         try{
             var url = HYPI + req.uuid;
             const response = await axios.get(url, CONFIG);
-            req.hypixel = response;
+            req.hypixel = response.data;
+
+            //req.hypixel = response.data.player;
             //return(response)
         }catch{
             console.log(`An error occured while looking up hypixel stats.`);
@@ -85,7 +86,9 @@ APP.post("/userLookup", async (req, res) => {
     var response = req.body.username + "'s user ID is " + req.uuid
     console.log(response);
     console.log(req.hypixel);
-    res.render("index.ejs", CONFIG);
+    res.render("index.ejs", {
+        hypixel: req.hypixel
+    });
     //res.redirect("/");
 });
 

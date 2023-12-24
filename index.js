@@ -46,6 +46,26 @@ function getKey(path){ // Returns text from 'path'. Creates 'path' if it doesn't
     return key;
 }
 
+function removeUnderscores(string){
+    string.forEach(char => {
+        if(char == "_"){
+            string[char] = " ";
+        }
+    });
+}
+
+function translateJSON(original){ // Converts hypixel's JSON into something easier to work with.
+    var translated = 
+    {
+        username: original.player.displayname,
+        rank: original.player.newPackageRank,
+        playtime: original.player.timePlaying,
+        firstPlayed: new Date(original.player.firstLogin),
+        lastPlayed: new Date(original.player.lastLogout),
+    }
+    return(translated);
+}
+
 async function getUUID(req, res, next){
     if(req.body.username){
         try{
@@ -65,7 +85,7 @@ async function getStats(req, res, next){
         try{
             var url = HYPI + req.uuid;
             const response = await axios.get(url, CONFIG);
-            req.hypixel = response.data.player;
+            req.hypixel = response.data;
 
             //req.hypixel = response.data.player;
             //return(response)
@@ -85,9 +105,8 @@ APP.get("/", (req, res) => {
 APP.post("/userLookup", async (req, res) => {
     var response = req.body.username + "'s user ID is " + req.uuid
     console.log(response);
-    console.log(req.hypixel);
     res.render("index.ejs", {
-        hypixel: req.hypixel
+        hypixel: translateJSON(req.hypixel)
     });
     //res.redirect("/");
 });

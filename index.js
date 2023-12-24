@@ -44,8 +44,12 @@ APP.get("/", (req, res) => {
     res.render("index.ejs");
 });
 
-APP.post("/submit", (req, res) => {
-    console.log(req.body);
+APP.post ("/submit", async (req, res) => {   
+    var url = DBPI + req.body.username;
+    var response = await axios.get(url);
+    var uuid = response.data.data.player.id // Drill down the JSON to UUID
+    
+    console.log(req.body.username + "'s user ID is " + uuid);
     res.redirect("/");
 });
 

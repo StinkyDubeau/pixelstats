@@ -46,19 +46,24 @@ function getKey(path){ // Returns text from 'path'. Creates 'path' if it doesn't
     return key;
 }
 
-function removeUnderscores(string){
-    string.forEach(char => {
-        if(char == "_"){
-            string[char] = " ";
+function removeUnderscores(str){
+    console.log(str.length);
+    var newStr = "";
+    for(var i = 0; i < str.length; i++){
+        if(str[i] == "_"){
+            newStr += " ";
+        }else{
+            newStr += str[i];
         }
-    });
+    }
+    return(newStr);
 }
 
 function translateJSON(original){ // Converts hypixel's JSON into something easier to work with.
     var translated = 
     {
         username: original.player.displayname,
-        rank: original.player.newPackageRank,
+        rank: removeUnderscores(original.player.newPackageRank),
         playtime: original.player.timePlaying,
         firstPlayed: new Date(original.player.firstLogin),
         lastPlayed: new Date(original.player.lastLogout),

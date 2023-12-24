@@ -18,6 +18,7 @@ node index.js
 Issues:
 - Implement something better than "default username" when user enters an invalid username.
 - Need to send user-agent in header when pulling from playerDB
+- Need to disallow illegal characters in username field.
 
 Todo:
 

@@ -41,22 +41,23 @@ function getKey(path){ // Returns text from (path). Creates (path) if it doesn't
 
 APP.use(express.static("./public"));
 APP.use(bodyParser.urlencoded({extended: true}));
+APP.use(getUUID);
+
+async function getUUID(req, res, next){
+    if(req.body.username){
+        var url = DBPI + req.body.username;
+        var response = await axios.get(url);
+        req.uuid = response.data.data.player.id;
+    }
+    next();
+}
 
 APP.get("/", (req, res) => {
     res.render("index.ejs");
 });
 
 APP.post("/submitPlayer", async (req, res) => {   
-    var url = DBPI + req.body.username;
-
-    try{
-        var response = await axios.get(url);
-        var uuid = response.data.data.player.id; // Drill down the JSON to UUID
-    }catch(err){
-        console.log(`The username ${req.body.username} failed to return a valid UUID. Reverting to default.`);
-    }
-
-    console.log(req.body.username + "'s user ID is " + uuid);
+    console.log(req.body.username + "'s user ID is " + req.uuid);
     res.redirect("/");
 });
 

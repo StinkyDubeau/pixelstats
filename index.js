@@ -12,6 +12,8 @@ const KEY = getKey(KEYPATH);
 const HYPI = "https://api.hypixel.net/v2/";
 const DBPI = "https://playerdb.co/api/player/minecraft/";
 
+const DEFAULTUUID = "02e5af78-1e91-4c28-bb2b-937950c4d3f3"; // This acts only as a fallback.
+
 const CONFIG = {
     "title": PROJECTNAME,
     "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
@@ -44,11 +46,16 @@ APP.get("/", (req, res) => {
     res.render("index.ejs");
 });
 
-APP.post ("/submit", async (req, res) => {   
+APP.post("/submitPlayer", async (req, res) => {   
     var url = DBPI + req.body.username;
-    var response = await axios.get(url);
-    var uuid = response.data.data.player.id // Drill down the JSON to UUID
-    
+
+    try{
+        var response = await axios.get(url);
+        var uuid = response.data.data.player.id; // Drill down the JSON to UUID
+    }catch(err){
+        console.log(`The username ${req.body.username} failed to return a valid UUID. Reverting to default.`);
+    }
+
     console.log(req.body.username + "'s user ID is " + uuid);
     res.redirect("/");
 });

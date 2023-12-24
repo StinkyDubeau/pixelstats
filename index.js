@@ -19,7 +19,7 @@ const CONFIG = {
     "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
 }
 
-function getKey(path){ // Returns text from (path). Creates (path) if it doesn't exist.
+function getKey(path){ // Returns text from 'path'. Creates 'path' if it doesn't exist.
     var key;
     var needKeyMsg = '- You have not inserted your API key into apikeys.txt. The app will not work until you do. -'
     try {
@@ -45,9 +45,14 @@ APP.use(getUUID);
 
 async function getUUID(req, res, next){
     if(req.body.username){
+        try{
         var url = DBPI + req.body.username;
         var response = await axios.get(url);
         req.uuid = response.data.data.player.id;
+        }catch{
+            console.log("Username does not exist! Using default uuid.");
+            req.uuid = DEFAULTUUID;
+        }        
     }
     next();
 }

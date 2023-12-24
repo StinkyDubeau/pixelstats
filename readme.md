@@ -16,12 +16,12 @@ node index.js
 ```
 
 Issues:
-- Implement something better than "default username" when user enters an invalid username.
-- Need to send user-agent in header when pulling from playerDB
-- Need to disallow illegal characters in username field.
+- handle nonexistant usernames better.
+    - Currently, it will fallback to DEFAULTUUID if there is no username.
+- send user-agent in header when pulling from playerDB
+- disallow illegal characters in username field.
 
 Todo:
-
 - Show player's last login
 - Show player's account age
     - Badges based on account age? Similar to Steam.

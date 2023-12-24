@@ -31,5 +31,5 @@ Todo:
         - Final kills
         - Leaderboard position (if greater than certain threshold)
         - Level
-
 - Show an option to view ALL stats for a given name. Might as well use everything the API gives us. Make it as readable as possible. Start by just dumping the entire JSON, and hone it down after.
+- Cache name searches in our own db to reduce latency and reliance on (slow!) playerdb.

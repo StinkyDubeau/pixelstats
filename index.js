@@ -9,15 +9,24 @@ const PORT = 3000;
 const KEYPATH = "apikeys.txt";
 const KEY = getKey(KEYPATH);
 
-const HYPI = "https://api.hypixel.net/v2/";
+const HYPI = "https://api.hypixel.net/v2/player?uuid=";
 const DBPI = "https://playerdb.co/api/player/minecraft/";
 
 const DEFAULTUUID = "02e5af78-1e91-4c28-bb2b-937950c4d3f3"; // This acts only as a fallback.
 
 const CONFIG = {
-    "title": PROJECTNAME,
-    "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
+    headers: {
+        "API-Key": KEY,
+        "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`
+    }
 }
+
+
+
+APP.use(express.static("./public"));
+APP.use(bodyParser.urlencoded({extended: true}));
+APP.use(getUUID);
+APP.use(getStats);
 
 function getKey(path){ // Returns text from 'path'. Creates 'path' if it doesn't exist.
     var key;
@@ -38,17 +47,12 @@ function getKey(path){ // Returns text from 'path'. Creates 'path' if it doesn't
       }
     return key;
 }
-
-APP.use(express.static("./public"));
-APP.use(bodyParser.urlencoded({extended: true}));
-APP.use(getUUID);
-
 async function getUUID(req, res, next){
     if(req.body.username){
         try{
-        var url = DBPI + req.body.username;
-        var response = await axios.get(url);
-        req.uuid = response.data.data.player.id;
+            var url = DBPI + req.body.username;
+            const response = await axios.get(url, CONFIG);
+            req.uuid = response.data.data.player.id;
         }catch{
             console.log("Username does not exist! Using default uuid.");
             req.uuid = DEFAULTUUID;
@@ -57,13 +61,32 @@ async function getUUID(req, res, next){
     next();
 }
 
+async function getStats(req, res, next){
+    if(KEY){
+        try{
+            var url = HYPI + req.uuid;
+            const response = await axios.get(url, CONFIG);
+            req.hypixel = response;
+            //return(response)
+        }catch{
+            console.log(`An error occured while looking up hypixel stats.`);
+        }
+    }else{
+        console.log(`You need to define an API key in ${KEYPATH}.`);
+    }
+    next();
+}
+
 APP.get("/", (req, res) => {
     res.render("index.ejs");
 });
 
-APP.post("/submitPlayer", async (req, res) => {   
-    console.log(req.body.username + "'s user ID is " + req.uuid);
-    res.redirect("/");
+APP.post("/userLookup", async (req, res) => {
+    var response = req.body.username + "'s user ID is " + req.uuid
+    console.log(response);
+    console.log(req.hypixel);
+    res.render("index.ejs", CONFIG);
+    //res.redirect("/");
 });
 
 APP.listen(PORT, (req, res) => {

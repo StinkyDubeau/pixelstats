@@ -12,10 +12,16 @@
     </div>
 
     <div class="body">
-        <form action="/submitPlayer" method="post">
+        <form action="/userLookup" method="post">
             <label for="username">Enter your Minecraft username:</label>
             <input id="username" name="username" placeholder="Username or UUID">
         </form>
+    </div>
+
+    <div class="text-area">
+        <% if(locals.hypixel){ %>
+            <p><%=locals.hypixel%></p>
+        <% } %>
     </div>
 
     <div class="footer">

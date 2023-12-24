@@ -12,7 +12,7 @@ const KEY = getKey(KEYPATH);
 const HYPI = "https://api.hypixel.net/v2/player?uuid=";
 const DBPI = "https://playerdb.co/api/player/minecraft/";
 
-const DEFAULTUUID = "02e5af78-1e91-4c28-bb2b-937950c4d3f3"; // This acts only as a fallback.
+const DEFAULTUUID = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // This acts only as a fallback.
 
 const CONFIG = {
     headers: {
@@ -65,7 +65,7 @@ async function getStats(req, res, next){
         try{
             var url = HYPI + req.uuid;
             const response = await axios.get(url, CONFIG);
-            req.hypixel = response.data;
+            req.hypixel = response.data.player;
 
             //req.hypixel = response.data.player;
             //return(response)

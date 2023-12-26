@@ -17,7 +17,7 @@ const DEFAULTUUID = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // This acts only as a f
 const CONFIG = {
     headers: {
         "API-Key": KEY,
-        "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`
+        "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
     }
 }
 
@@ -83,7 +83,7 @@ APP.get("/", (req, res) => {
 });
 
 APP.post("/userLookup", async (req, res) => {
-    var response = req.body.username + "'s user ID is " + req.uuid
+    var response = req.body.username + "'s user ID is " + req.uuid;
     console.log(response);
     console.log(req.hypixel);
     res.render("index.ejs", {

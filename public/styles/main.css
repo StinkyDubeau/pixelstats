@@ -27,6 +27,7 @@ h1{
     margin: 0px;
 }
 
+
 .content{
     background-color: var(--background);
 }
@@ -40,10 +41,10 @@ h1{
     grid-template-rows: 1;
     gap: 15px;
 }
-.grid-item{
+/*.grid-item{
     background-color: red;
     border: 1px solid white;
-}
+} [used for developing grid] */
 
 @media (max-width: var(--small)) {
     :root{

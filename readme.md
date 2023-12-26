@@ -16,6 +16,7 @@ node index.js
 ```
 
 Issues:
+- Log a user-error in the site rather than defaulting to Herobrine.
 - handle nonexistant usernames better.
     - Currently, it will fallback to DEFAULTUUID if there is no username.
 - send user-agent in header when pulling from playerDB

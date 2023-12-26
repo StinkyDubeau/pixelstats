@@ -92,7 +92,13 @@ async function getStats(req, res, next){
     if(KEY){
         try{
             var url = HYPI + req.uuid;
-            const response = await axios.get(url, CONFIG);
+            var response = await axios.get(url, CONFIG);
+            if(response.data.player == null){
+                // TODO: Log a user-error in the site rather than defaulting to Herobrine.
+                console.log(`${req.uuid} has never joined hypixel. Reverting to default UUID.`);
+                url = HYPI + DEFAULTUUID;
+                response = await axios.get(url, CONFIG);
+            }
             req.hypixel = response.data;
 
             //req.hypixel = response.data.player;
@@ -107,6 +113,7 @@ async function getStats(req, res, next){
 }
 
 APP.get("/", (req, res) => {
+    console.log("Loading home...");
     res.render("index.ejs");
 });
 

@@ -27,9 +27,6 @@ h1{
     margin: 0px;
 }
 
-.bloc{
-    width: 100%;
-}
 .content{
     background-color: var(--background);
 }

@@ -7,9 +7,11 @@
     --foreground:        snow;
     --link:              orange;
 
-    --small:    400px;
-    --medium:   700px;
-    --large:   1500px;
+    --sidePad: 15px;
+
+    --small:     600px;
+    --medium:   1200px;
+    --large:    1500px;
 }
 
 body{
@@ -21,18 +23,39 @@ body{
 a{
     color: var(--link);
 }
+h1{
+    margin: 0px;
+}
 
 .bloc{
-    padding: 15px;
     width: 100%;
 }
 .content{
     background-color: var(--background);
 }
-h1{
-    margin: 0px;
+.header, .footer{
+    padding: 0 var(--sidePad);
+}
+.grid-container{
+    padding: 0 var(--sidePad);
+    display: grid;
+    grid-template-columns: 2;
+    grid-template-rows: 1;
+    gap: 15px;
+}
+.grid-item{
+    background-color: red;
+    border: 1px solid white;
 }
 
-@media screen {
-    
+@media (max-width: var(--small)) {
+    :root{
+        --sidePad: 5px;
+        --accentBackground: yellow;
+    }
+}
+@media (max-width: var(--medium)) {
+    :root{
+        --sidePad: 50px;
+    }
 }

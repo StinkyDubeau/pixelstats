@@ -47,8 +47,11 @@ function getKey(path){ // Returns text from 'path'. Creates 'path' if it doesn't
 }
 
 function removeUnderscores(str){
-    console.log(str.length);
     var newStr = "";
+    if(!str){
+        console.log("Cannot remove underscores from empty string!");
+        return;
+    }
     for(var i = 0; i < str.length; i++){
         if(str[i] == "_"){
             newStr += " ";

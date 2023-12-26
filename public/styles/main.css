@@ -1,8 +1,38 @@
+:root{
+    /* --- Palette --- */
+    --accentBackground:  rgb(121, 0, 121);
+    --accentForeground:  orange;
+    --nearBlack:         rgb(78, 0, 26);
+    --background:        rgb(29, 3, 15);
+    --foreground:        snow;
+    --link:              orange;
+
+    --small:    400px;
+    --medium:   700px;
+    --large:   1500px;
+}
+
 body{
-    color: snow;
-    background-color: black;
+    color: var(--foreground);
+    background-color: var(--accentBackground);
     font-family: sans-serif;
+    margin: 0;
 }
 a{
-    color: purple;
+    color: var(--link);
+}
+
+.bloc{
+    padding: 15px;
+    width: 100%;
+}
+.content{
+    background-color: var(--background);
+}
+h1{
+    margin: 0px;
+}
+
+@media screen {
+    
 }

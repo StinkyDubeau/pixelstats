@@ -2,6 +2,9 @@
 apikeys.txt
 apikey.txt
 
+# Pixelstats Specific
+devhelpers
+
 # Logs
 logs
 *.log

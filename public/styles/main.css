@@ -1,59 +1,59 @@
 :root{
-    /* --- Palette --- */
-    --accentBackground:  rgb(121, 0, 121);
-    --accentForeground:  orange;
-    --nearBlack:         rgb(78, 0, 26);
-    --background:        rgb(29, 3, 15);
-    --foreground:        snow;
-    --link:              orange;
+        /* --- Palette --- */
+        --accentBackground:    rgb(121, 0, 121);
+        --accentForeground:    orange;
+        --nearBlack:                 rgb(78, 0, 26);
+        --background:                rgb(29, 3, 15);
+        --foreground:                snow;
+        --link:                            orange;
 
-    --sidePad: 15px;
+        --sidePad: 15px;
 
-    --small:     600px;
-    --medium:   1200px;
-    --large:    1500px;
+        --small:         600px;
+        --medium:     1200px;
+        --large:        1500px;
 }
 
 body{
-    color: var(--foreground);
-    background-color: var(--accentBackground);
-    font-family: sans-serif;
-    margin: 0;
+        color: var(--foreground);
+        background-color: var(--accentBackground);
+        font-family: sans-serif;
+        margin: 0;
 }
 a{
-    color: var(--link);
+        color: var(--link);
 }
 h1{
-    margin: 0px;
+        margin: 0px;
 }
 
 
 .content{
-    background-color: var(--background);
+        background-color: var(--background);
 }
 .header, .footer{
-    padding: 0 var(--sidePad);
+        padding: 0 var(--sidePad);
 }
 .grid-container{
-    padding: 0 var(--sidePad);
-    display: grid;
-    grid-template-columns: 2;
-    grid-template-rows: 1;
-    gap: 15px;
+        padding: 0 var(--sidePad);
+        display: grid;
+        grid-template-columns: 2;
+        grid-template-rows: 1;
+        gap: 15px;
 }
 /*.grid-item{
-    background-color: red;
-    border: 1px solid white;
+        background-color: red;
+        border: 1px solid white;
 } [used for developing grid] */
 
 @media (max-width: var(--small)) {
-    :root{
-        --sidePad: 5px;
-        --accentBackground: yellow;
-    }
+        :root{
+                --sidePad: 5px;
+                --accentBackground: yellow;
+        }
 }
 @media (max-width: var(--medium)) {
-    :root{
-        --sidePad: 50px;
-    }
+        :root{
+                --sidePad: 50px;
+        }
 }

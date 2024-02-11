@@ -5,7 +5,7 @@ import fs from "node:fs";
 
 const PROJECTNAME = "PixelStats"
 const APP  = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const KEYPATH = "apikeys.txt";
 
 const HYPI = "https://api.hypixel.net/v2/player?uuid=";

@@ -1,6 +1,7 @@
 # API Keys
 apikeys.txt
 apikey.txt
+.env
 
 # Pixelstats Specific
 devhelpers

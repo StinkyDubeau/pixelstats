@@ -4,7 +4,7 @@ import axios from "axios";
 import fs from "node:fs";
 
 const PROJECTNAME = "PixelStats"
-const APP  = express();
+const APP = express();
 const PORT = process.env.PORT || 3000;
 const KEYPATH = "apikeys.txt";
 
@@ -40,47 +40,50 @@ const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_KEY);
 // }
 
 APP.use(express.static("./public"));
-APP.use(bodyParser.urlencoded({extended: true}));
+APP.use(bodyParser.urlencoded({ extended: true }));
 APP.use(getUUID);
 APP.use(getStats);
 
-function removeUnderscores(str){
+APP.set('view engine', 'ejs');
+APP.set('views', 'views');
+
+function removeUnderscores(str) {
   var newStr = "";
-  if(!str){
+  if (!str) {
     console.log("Cannot remove underscores from empty string!");
     return;
   }
-  for(var i = 0; i < str.length; i++){
-    if(str[i] == "_"){
+  for (var i = 0; i < str.length; i++) {
+    if (str[i] == "_") {
       newStr += " ";
-    }else{
+    } else {
       newStr += str[i];
     }
   }
-  return(newStr);
+  return (newStr);
 }
 
-function translateJSON(original){ // Converts hypixel's JSON into something easier to work with.
-  var translated = 
-    {
+function translateJSON(original) { // Converts hypixel's JSON into something easier to work with.
+  var translated =
+  {
     username: original.player.displayname,
     rank: removeUnderscores(original.player.newPackageRank),
     playtime: original.player.timePlaying,
     firstPlayed: new Date(original.player.firstLogin),
     lastPlayed: new Date(original.player.lastLogout),
   }
-  return(translated);
+  return (translated);
 }
 
 function validateUUID(uuid) {
-    const Pattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4|1][0-9a-fA-F]{3}-[8|9|aA|bB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+  const Pattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4|1][0-9a-fA-F]{3}-[8|9|aA|bB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
 
-    if (Pattern.test(uuid)) {
-        return uuid; // Minecraft UUID is valid
-    } else {
-        console.error("Malformed Minecraft UUID. Attempting to fix or using a default UUID.");
-        return DEFAULTUUID; // Replace with your logic for fixing or default Minecraft UUID
-    }
+  if (Pattern.test(uuid)) {
+    return uuid; // Minecraft UUID is valid
+  } else {
+    console.error("Malformed Minecraft UUID. Attempting to fix or using a default UUID.");
+    return DEFAULTUUID; // Replace with your logic for fixing or default Minecraft UUID
+  }
 }
 
 async function getUUID(req, res, next) {
@@ -112,10 +115,10 @@ async function getStats(req, res, next) {
 
       //req.hypixel = response.data.player;
       //return(response)
-    }catch{
+    } catch {
       console.log(`An error occured while looking up hypixel stats.`);
     }
-  }else{
+  } else {
     console.log(`You need to define an API key in ${KEYPATH}.`);
   }
   next();

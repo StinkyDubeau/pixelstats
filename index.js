@@ -29,7 +29,7 @@ function genAPIConfig(apiName, apiKey) {
 }
 
 const PLAYER_DB_CONFIG = genAPIConfig("playerdb");
-const HYPIXEL_KEY = getKey(KEYPATH);
+const HYPIXEL_KEY = process.env.HYPIXEL_KEY;
 const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_KEY);
 
 // const CONFIG = {
@@ -43,26 +43,6 @@ APP.use(express.static("./public"));
 APP.use(bodyParser.urlencoded({extended: true}));
 APP.use(getUUID);
 APP.use(getStats);
-
-function getKey(path){ // Returns text from 'path'. Creates 'path' if it doesn't exist.
-  var key;
-  var needKeyMsg = '- You have not inserted your API key into apikeys.txt. The app will not work until you do. -'
-  try {
-    const data = fs.readFileSync(path, 'utf8');
-    key = data;
-  }
-      catch (err) {
-    try{
-      fs.writeFile(path, needKeyMsg, (err) => {
-        if (err) throw err;
-        console.log(`${path} has been created. Please paste your API key inside.`);
-      });
-    } catch(err){
-      console.error(`Create ${path} and paste your API key inside.`);
-    }
-  }
-  return key;
-}
 
 function removeUnderscores(str){
   var newStr = "";

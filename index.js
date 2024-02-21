@@ -28,6 +28,7 @@ function genAPIConfig(apiName, apiKey) {
   };
 }
 
+
 const PLAYER_DB_CONFIG = genAPIConfig("playerdb");
 const HYPIXEL_KEY = process.env.HYPIXEL_KEY;
 const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_KEY);
@@ -64,15 +65,21 @@ function removeUnderscores(str) {
 }
 
 function translateJSON(original) { // Converts hypixel's JSON into something easier to work with.
-  var translated =
-  {
-    username: original.player.displayname,
-    rank: removeUnderscores(original.player.newPackageRank),
-    playtime: original.player.timePlaying,
-    firstPlayed: new Date(original.player.firstLogin),
-    lastPlayed: new Date(original.player.lastLogout),
+  try {
+    var translated =
+    {
+      username: original.player.displayname,
+      rank: removeUnderscores(original.player.newPackageRank),
+      playtime: original.player.timePlaying,
+      firstPlayed: new Date(original.player.firstLogin),
+      lastPlayed: new Date(original.player.lastLogout),
+    }
+    return (translated);
   }
-  return (translated);
+  catch {
+    console.log("There was an error while simplifying the data we received from Hypixel. Try another username?")
+    return (original);
+  }
 }
 
 function validateUUID(uuid) {
@@ -119,7 +126,7 @@ async function getStats(req, res, next) {
       console.log(`An error occured while looking up hypixel stats.`);
     }
   } else {
-    console.log(`You need to define an API key in ${KEYPATH}.`);
+    console.log(`Failed to use key. Is your key ${HYPIXEL_KEY}?`);
   }
   next();
 }

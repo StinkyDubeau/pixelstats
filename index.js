@@ -1,33 +1,15 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-import fs from "node:fs";
 
 const PROJECTNAME = "PixelStats"
 const APP = express();
 const PORT = process.env.PORT || 3000;
-const KEYPATH = "apikeys.txt";
 
 const HYPI = "https://api.hypixel.net/v2/player?uuid=";
 const DBPI = "https://playerdb.co/api/player/minecraft/";
 
 const DEFAULTUUID = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // This acts only as a fallback.
-
-// Function to generate API configs dynamically
-function genAPIConfig(apiName, apiKey) {
-  const headers = {
-    "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
-  };
-
-  if (apiKey) {
-    headers["API-key"] = apiKey;
-  }
-
-  return {
-    headers: headers,
-  };
-}
-
 
 const PLAYER_DB_CONFIG = genAPIConfig("playerdb");
 const HYPIXEL_KEY = process.env.HYPIXEL_KEY;
@@ -47,6 +29,21 @@ APP.use(getStats);
 
 APP.set('view engine', 'ejs');
 APP.set('views', 'views');
+
+// Function to generate API configs dynamically
+function genAPIConfig(apiName, apiKey) {
+  const headers = {
+    "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
+  };
+
+  if (apiKey) {
+    headers["API-key"] = apiKey;
+  }
+
+  return {
+    headers: headers,
+  };
+}
 
 function removeUnderscores(str) {
   var newStr = "";

@@ -1,6 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import * as dotenv from 'dotenv'; dotenv.config();
+
 
 const PROJECTNAME = "PixelStats"
 const APP = express();
@@ -15,6 +17,8 @@ const PLAYER_DB_CONFIG = genAPIConfig("playerdb");
 const HYPIXEL_KEY = process.env.HYPIXEL_KEY;
 const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_KEY);
 
+// Our playerDB calls should have headers like this:
+//
 // const CONFIG = {
 //     headers: {
 //         "API-Key": KEY,
@@ -146,4 +150,5 @@ APP.listen(PORT, (req, res) => {
   console.log(`Welcome to ${PROJECTNAME}!`);
   console.log(`Using API key:   ${HYPIXEL_KEY}`);
   console.log(`Running on port: ${PORT}`);
+  console.log(process.env.TEST);
 });

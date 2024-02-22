@@ -150,5 +150,4 @@ APP.listen(PORT, (req, res) => {
   console.log(`Welcome to ${PROJECTNAME}!`);
   console.log(`Using API key:   ${HYPIXEL_KEY}`);
   console.log(`Running on port: ${PORT}`);
-  console.log(process.env.TEST);
 });

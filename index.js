@@ -1,17 +1,38 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-import fs from "node:fs";
+import * as dotenv from 'dotenv'; dotenv.config();
+
 
 const PROJECTNAME = "PixelStats"
-const APP  = express();
+const APP = express();
 const PORT = process.env.PORT || 3000;
-const KEYPATH = "apikeys.txt";
 
 const HYPI = "https://api.hypixel.net/v2/player?uuid=";
 const DBPI = "https://playerdb.co/api/player/minecraft/";
 
 const DEFAULTUUID = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // This acts only as a fallback.
+
+const PLAYER_DB_CONFIG = genAPIConfig("playerdb");
+const HYPIXEL_KEY = process.env.HYPIXEL_KEY;
+const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_KEY);
+
+// Our playerDB calls should have headers like this:
+//
+// const CONFIG = {
+//     headers: {
+//         "API-Key": KEY,
+//         "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
+//     }
+// }
+
+APP.use(express.static("./public"));
+APP.use(bodyParser.urlencoded({ extended: true }));
+APP.use(getUUID);
+APP.use(getStats);
+
+APP.set('view engine', 'ejs');
+APP.set('views', 'views');
 
 // Function to generate API configs dynamically
 function genAPIConfig(apiName, apiKey) {
@@ -28,59 +49,49 @@ function genAPIConfig(apiName, apiKey) {
   };
 }
 
-const PLAYER_DB_CONFIG = genAPIConfig("playerdb");
-const HYPIXEL_KEY = process.env.HYPIXEL_KEY;
-const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_KEY);
-
-// const CONFIG = {
-//     headers: {
-//         "API-Key": KEY,
-//         "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
-//     }
-// }
-
-APP.use(express.static("./public"));
-APP.use(bodyParser.urlencoded({extended: true}));
-APP.use(getUUID);
-APP.use(getStats);
-
-function removeUnderscores(str){
+function removeUnderscores(str) {
   var newStr = "";
-  if(!str){
+  if (!str) {
     console.log("Cannot remove underscores from empty string!");
     return;
   }
-  for(var i = 0; i < str.length; i++){
-    if(str[i] == "_"){
+  for (var i = 0; i < str.length; i++) {
+    if (str[i] == "_") {
       newStr += " ";
-    }else{
+    } else {
       newStr += str[i];
     }
   }
-  return(newStr);
+  return (newStr);
 }
 
-function translateJSON(original){ // Converts hypixel's JSON into something easier to work with.
-  var translated = 
+function translateJSON(original) { // Converts hypixel's JSON into something easier to work with.
+  try {
+    var translated =
     {
-    username: original.player.displayname,
-    rank: removeUnderscores(original.player.newPackageRank),
-    playtime: original.player.timePlaying,
-    firstPlayed: new Date(original.player.firstLogin),
-    lastPlayed: new Date(original.player.lastLogout),
+      username: original.player.displayname,
+      rank: removeUnderscores(original.player.newPackageRank),
+      playtime: original.player.timePlaying,
+      firstPlayed: new Date(original.player.firstLogin),
+      lastPlayed: new Date(original.player.lastLogout),
+    }
+    return (translated);
   }
-  return(translated);
+  catch {
+    console.log("There was an error while simplifying the data we received from Hypixel. Try another username?")
+    return (original);
+  }
 }
 
 function validateUUID(uuid) {
-    const Pattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4|1][0-9a-fA-F]{3}-[8|9|aA|bB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+  const Pattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4|1][0-9a-fA-F]{3}-[8|9|aA|bB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
 
-    if (Pattern.test(uuid)) {
-        return uuid; // Minecraft UUID is valid
-    } else {
-        console.error("Malformed Minecraft UUID. Attempting to fix or using a default UUID.");
-        return DEFAULTUUID; // Replace with your logic for fixing or default Minecraft UUID
-    }
+  if (Pattern.test(uuid)) {
+    return uuid; // Minecraft UUID is valid
+  } else {
+    console.error("Malformed Minecraft UUID. Attempting to fix or using a default UUID.");
+    return DEFAULTUUID; // Replace with your logic for fixing or default Minecraft UUID
+  }
 }
 
 async function getUUID(req, res, next) {
@@ -112,11 +123,11 @@ async function getStats(req, res, next) {
 
       //req.hypixel = response.data.player;
       //return(response)
-    }catch{
+    } catch {
       console.log(`An error occured while looking up hypixel stats.`);
     }
-  }else{
-    console.log(`You need to define an API key in ${KEYPATH}.`);
+  } else {
+    console.log(`Failed to use key. Is your key ${HYPIXEL_KEY}?`);
   }
   next();
 }

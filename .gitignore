@@ -1,4 +1,6 @@
 # API Keys
+# apikeys.txt is a legacy file that used to store API keys. I'm keeping it in the gitignore so that nobody accidentally shares their key from an existing file.
+# I can hear you screaming, but hey, you were dumb once too.
 apikeys.txt
 apikey.txt
 .env

@@ -1,7 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-import * as dotenv from 'dotenv'; dotenv.config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 
 const PROJECTNAME = "PixelStats"
@@ -85,12 +86,15 @@ function translateJSON(original) { // Converts hypixel's JSON into something eas
 
 function validateUUID(uuid) {
   const Pattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4|1][0-9a-fA-F]{3}-[8|9|aA|bB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
-
-  if (Pattern.test(uuid)) {
-    return uuid; // Minecraft UUID is valid
+  if (uuid) {
+    if (Pattern.test(uuid)) {
+      return uuid; // Minecraft UUID is valid
+    } else {
+      console.error("Malformed Minecraft UUID. Attempting to fix or using a default UUID.");
+      return DEFAULTUUID; // Replace with your logic for fixing or default Minecraft UUID
+    }
   } else {
-    console.error("Malformed Minecraft UUID. Attempting to fix or using a default UUID.");
-    return DEFAULTUUID; // Replace with your logic for fixing or default Minecraft UUID
+    console.log("No UUID");
   }
 }
 
@@ -109,31 +113,35 @@ async function getUUID(req, res, next) {
 }
 
 async function getStats(req, res, next) {
-  if (HYPIXEL_KEY) {
-    try {
-      var url = HYPI + validateUUID(req.uuid);
-      var response = await axios.get(url, HYPIXEL_CONFIG);
-      if (response.data.player == null) {
-        // TODO: Log a user-error in the site rather than defaulting to Herobrine.
-        console.log(`${req.uuid} has never joined hypixel. Reverting to default UUID.`);
-        url = HYPI + DEFAULTUUID;
-        response = await axios.get(url, HYPIXEL_CONFIG);
-      }
-      req.hypixel = response.data;
+  if (req) {
+    if (HYPIXEL_KEY) {
+      try {
+        var url = HYPI + validateUUID(req.uuid);
+        var response = await axios.get(url, HYPIXEL_CONFIG);
+        if (response.data.player == null) {
+          // TODO: Log a user-error in the site rather than defaulting to Herobrine.
+          console.log(`${req.uuid} has never joined hypixel. Reverting to default UUID.`);
+          url = HYPI + DEFAULTUUID;
+          response = await axios.get(url, HYPIXEL_CONFIG);
+        }
+        req.hypixel = response.data;
 
-      //req.hypixel = response.data.player;
-      //return(response)
-    } catch {
-      console.log(`An error occured while looking up hypixel stats.`);
+        //req.hypixel = response.data.player;
+        //return(response)
+      } catch {
+        console.log(`An error occured while looking up hypixel stats.`);
+      }
+    } else {
+      console.log(`Failed to use key. Is your key ${HYPIXEL_KEY}?`);
     }
   } else {
-    console.log(`Failed to use key. Is your key ${HYPIXEL_KEY}?`);
+    console.log("Middleware no req at getStats");
   }
   next();
 }
 
 APP.get("/", (req, res) => {
-  console.log("Loading home...");
+  console.log("Loading \"/\"");
   res.render("index.ejs");
 });
 

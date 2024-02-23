@@ -135,7 +135,7 @@ async function getStats(req, res, next) {
       console.log(`Failed to use key. Is your key ${HYPIXEL_KEY}?`);
     }
   } else {
-    console.log("Middleware no req at getStats");
+    console.log("Tried to getStats without specifying user.");
   }
   next();
 }
@@ -149,7 +149,8 @@ APP.post("/userLookup", async (req, res) => {
   var response = req.body.username + "'s user ID is " + req.uuid;
   console.log(response);
   res.render("index.ejs", {
-    hypixel: simplifyJSON(req.hypixel)
+    hypixel: simplifyJSON(req.hypixel),
+    uuid: req.uuid,
   });
   //res.redirect("/");
 });

@@ -28,7 +28,13 @@ h1{
     margin: 0px;
 }
 
-
+.skin{
+    max-height: 200px;
+}
+.uuid{
+    font-size: 0.8rem;
+    color: gray;
+}
 .content{
     padding-top: 30px;
     padding-bottom: 15px;

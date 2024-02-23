@@ -5,18 +5,18 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 
-const PROJECTNAME = "PixelStats"
-const APP = express();
-const PORT = process.env.PORT || 3000;
+const projectName = "PixelStats"
+const app = express();
+const port = process.env.PORT || 3000;
 
-const HYPI = "https://api.hypixel.net/v2/player?uuid=";
-const DBPI = "https://playerdb.co/api/player/minecraft/";
+const hypixeApiUrl = "https://api.hypixel.net/v2/player?uuid=";
+const playerDbApiUrl = "https://playerdb.co/api/player/minecraft/";
 
-const DEFAULTUUID = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // This acts only as a fallback.
+const fallbackUuid = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // This acts only as a fallback.
 
 const PLAYER_DB_CONFIG = genAPIConfig("playerdb");
-const HYPIXEL_KEY = process.env.HYPIXEL_KEY;
-const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_KEY);
+const HYPIXEL_API_KEY = process.env.HYPIXEL_KEY;
+const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_API_KEY);
 
 // Our playerDB calls should have headers like this:
 //
@@ -27,18 +27,18 @@ const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_KEY);
 //     }
 // }
 
-APP.use(express.static("./public"));
-APP.use(bodyParser.urlencoded({ extended: true }));
-APP.use(getUUID);
-APP.use(getStats);
+app.use(express.static("./public"));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(getUUID);
+app.use(getStats);
 
-APP.set('view engine', 'ejs');
-APP.set('views', 'views');
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
 // Function to generate API configs dynamically
 function genAPIConfig(apiName, apiKey) {
   const headers = {
-    "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
+    "user-agent": `github.com/stinkydubeau/${projectName}`,
   };
 
   if (apiKey) {
@@ -91,7 +91,7 @@ function validateUUID(uuid) {
       return uuid; // Minecraft UUID is valid
     } else {
       console.error("Malformed Minecraft UUID. Attempting to fix or using a default UUID.");
-      return DEFAULTUUID; // Replace with your logic for fixing or default Minecraft UUID
+      return fallbackUuid; // Replace with your logic for fixing or default Minecraft UUID
     }
   } else {
     console.log("No UUID");
@@ -101,12 +101,12 @@ function validateUUID(uuid) {
 async function getUUID(req, res, next) {
   if (req.body.username) {
     try {
-      var url = DBPI + req.body.username;
+      var url = playerDbApiUrl + req.body.username;
       const response = await axios.get(url, PLAYER_DB_CONFIG);
       req.uuid = response.data.data.player.id;
     } catch {
       console.log("Username does not exist! Using default uuid.");
-      req.uuid = DEFAULTUUID;
+      req.uuid = fallbackUuid;
     }
   }
   next();
@@ -114,14 +114,14 @@ async function getUUID(req, res, next) {
 
 async function getStats(req, res, next) {
   if (req) {
-    if (HYPIXEL_KEY) {
+    if (HYPIXEL_API_KEY) {
       try {
-        var url = HYPI + validateUUID(req.uuid);
+        var url = hypixeApiUrl + validateUUID(req.uuid);
         var response = await axios.get(url, HYPIXEL_CONFIG);
         if (response.data.player == null) {
           // TODO: Log a user-error in the site rather than defaulting to Herobrine.
           console.log(`${req.uuid} has never joined hypixel. Reverting to default UUID.`);
-          url = HYPI + DEFAULTUUID;
+          url = hypixeApiUrl + fallbackUuid;
           response = await axios.get(url, HYPIXEL_CONFIG);
         }
         req.hypixel = response.data;
@@ -132,7 +132,7 @@ async function getStats(req, res, next) {
         console.log(`An error occured while looking up hypixel stats.`);
       }
     } else {
-      console.log(`Failed to use key. Is your key ${HYPIXEL_KEY}?`);
+      console.log(`Failed to use key. Is your key ${HYPIXEL_API_KEY}?`);
     }
   } else {
     console.log("Tried to getStats without specifying user.");
@@ -140,23 +140,24 @@ async function getStats(req, res, next) {
   next();
 }
 
-APP.get("/", (req, res) => {
+app.get("/", (req, res) => {
   console.log("Loading \"/\"");
   res.render("index.ejs");
 });
 
-APP.post("/userLookup", async (req, res) => {
+
+app.post("/userLookup", async (req, res) => {
   var response = req.body.username + "'s user ID is " + req.uuid;
   console.log(response);
-  res.render("index.ejs", {
+  res.render("player.ejs", {
     hypixel: simplifyJSON(req.hypixel),
     uuid: req.uuid,
   });
   //res.redirect("/");
 });
 
-APP.listen(PORT, (req, res) => {
-  console.log(`Welcome to ${PROJECTNAME}!`);
-  console.log(`Using API key:   ${HYPIXEL_KEY}`);
-  console.log(`Running on port: ${PORT}`);
+app.listen(port, (req, res) => {
+  console.log(`Welcome to ${projectName}!`);
+  console.log(`Using API key:   ${HYPIXEL_API_KEY}`);
+  console.log(`Running on port: ${port}`);
 });

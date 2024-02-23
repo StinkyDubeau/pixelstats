@@ -66,9 +66,9 @@ function removeUnderscores(str) {
   return (newStr);
 }
 
-function translateJSON(original) { // Converts hypixel's JSON into something easier to work with.
+function simplifyJSON(original) { // Simplifies hypixel's JSON into something easier to work with.
   try {
-    var translated =
+    var simplified =
     {
       username: original.player.displayname,
       rank: removeUnderscores(original.player.newPackageRank),
@@ -76,7 +76,7 @@ function translateJSON(original) { // Converts hypixel's JSON into something eas
       firstPlayed: new Date(original.player.firstLogin),
       lastPlayed: new Date(original.player.lastLogout),
     }
-    return (translated);
+    return (simplified);
   }
   catch {
     console.log("There was an error while simplifying the data we received from Hypixel. Try another username?")
@@ -149,7 +149,7 @@ APP.post("/userLookup", async (req, res) => {
   var response = req.body.username + "'s user ID is " + req.uuid;
   console.log(response);
   res.render("index.ejs", {
-    hypixel: translateJSON(req.hypixel)
+    hypixel: simplifyJSON(req.hypixel)
   });
   //res.redirect("/");
 });

@@ -149,11 +149,14 @@ app.get("/", (req, res) => {
 app.post("/userLookup", async (req, res) => {
   var response = req.body.username + "'s user ID is " + req.uuid;
   console.log(response);
-  res.render("player.ejs", {
-    hypixel: simplifyJSON(req.hypixel),
-    uuid: req.uuid,
-  });
-  //res.redirect("/");
+  if (req.uuid) { // Only load page if there is a valid user to lookup
+    res.render("player.ejs", {
+      hypixel: simplifyJSON(req.hypixel),
+      uuid: req.uuid,
+    });
+  } else {
+    res.redirect("/");
+  }
 });
 
 app.listen(port, (req, res) => {

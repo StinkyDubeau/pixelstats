@@ -1,57 +1,46 @@
 <%- include("./partials/header.ejs") %>
 
-    <div class="flex-container">
+    <div class="content bloc">
+        <% if(locals.hypixel){ %>
+            <form action="/" method="get">
+                <button class="btn btn-light" type="submit">Lookup another player</button>
+            </form>
 
-        <div class="content bloc">
-            <div class="grid-container">
-                <div class="grid-item">
-                    <% if(locals.hypixel){ %>
-                        <h2> <!-- Show player name and rank if it exists (e.g. YOUTUBE) -->
-                            <% if(hypixel.rank){ %>
-                                [<%=hypixel.rank%>]
-                                    <% }%>
-                                        <%=hypixel.username%>
-                        </h2>
-                        <form action="/" method="get">
-                            <button class="btn btn-light" type="submit">Lookup another player</button>
-                        </form>
-                        <% } else { %>
-                            <form action="/userLookup" method="post">
-                                <label for="username">Enter your Minecraft username:</label>
-                                <input id="username" name="username" placeholder="Username or UUID">
-                            </form>
-                            <% } %>
-                </div>
+            <div class="flex-center">
+                <div class="flex-container player-card">
 
-                <div class="grid-item">
-                    <div class="text-area">
-                        <% if(locals.hypixel){ %>
-                            <div class="playercard">
-                                <img class="skin" src="https://crafatar.com/renders/body/<%=uuid%>"
-                                    alt="<%=hypixel.username%>'s minecraft skin">
-                                <p class="uuid">uuid: <%=uuid%>
-                                </p>
-                            </div>
+                    <h2> <!-- Show player name and rank if it exists (e.g. YOUTUBE) -->
+                        <% if(hypixel.rank){ %>
+                            [<%=hypixel.rank%>]
+                                <% }%>
+                                    <%=hypixel.username%>
+                    </h2>
+                    <img class="skin" src="https://crafatar.com/renders/body/<%=uuid%>"
+                        alt="<%=hypixel.username%>'s minecraft skin">
+                    <p class="uuid">uuid: <%=uuid%>
+                    </p>
 
-                            <p>Playtime: <%=hypixel.playtime%>
-                            </p>
 
-                            <ul>
-                                <% for (let key in hypixel) { %>
-                                    <% if (hypixel[key]) { %>
-                                        <li>
-                                            <%= key %>: <%= hypixel[key] %>
-                                        </li>
-                                        <% } %>
-                                            <% } %>
-                            </ul>
-                            <% } %>
-                    </div>
+                    <p>Playtime: <%=hypixel.playtime%>
+                    </p>
+
+                    <ul>
+                        <!-- List of stats found -->
+                        <% for (let key in hypixel) { %>
+                            <% if (hypixel[key]) { %>
+                                <li>
+                                    <%= key %>: <%= hypixel[key] %>
+                                </li>
+                                <% } %>
+                                    <% } %>
+                    </ul>
 
                 </div>
             </div>
-        </div>
+            <% } %>
+    </div>
+    </div>
 
 
 
-        <%- include("./partials/footer.ejs") %>
+    <%- include("./partials/footer.ejs") %>

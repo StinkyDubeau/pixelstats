@@ -1,68 +1,102 @@
-:root{
+:root {
     /* --- Palette --- */
-    --accentBackground:  rgb(121, 0, 121);
-    --accentForeground:  orange;
-    --nearBlack:         rgb(78, 0, 26);
-    --background:        rgb(29, 3, 15);
-    --foreground:        snow;
-    --link:              orange;
+    --accentBackground: rgb(132, 80, 97);
+    --accentForeground: orange;
+    --nearBlack: rgb(78, 0, 26);
+    --background: rgb(70, 23, 53);
+    --shadow: rgba(0, 0, 0, 0.5);
+    --foreground: snow;
+    --link: orange;
+    --card: beige;
 
     --sidePad: 15px;
 
-    --small:     600px;
-    --medium:   1200px;
-    --large:    1500px;
+    --small: 600px;
+    --medium: 1200px;
+    --large: 1500px;
 }
 
-body{
+body {
     color: var(--foreground);
     background-color: var(--accentBackground);
     font-family: sans-serif;
     margin: 0;
     padding: 0;
 }
-a{
+
+a {
     color: var(--link);
 }
-h1{
+
+h1 {
     margin: 0px;
 }
 
-.skin{
+.player-card {
+    color: var(--nearBlack);
+    background-color: var(--card);
+    max-width: 600px;
+    box-shadow: 0px 50px 50px var(--shadow);
+    border-radius: 15px;
+}
+
+.skin {
     max-height: 200px;
 }
-.uuid{
+
+.uuid {
     font-size: 0.8rem;
     color: gray;
 }
-.content{
+
+.content {
     padding-top: 30px;
     padding-bottom: 15px;
     background-color: var(--background);
 }
-.header, .footer{
+
+.header,
+.footer {
     padding: 0 var(--sidePad);
 }
-.grid-container{
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-grid {
+    display: grid;
+    /* grid-template-columns: 3fr 2fr; */
+    /* grid-template-rows: 1fr 1fr; */
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.grid-container {
     padding: 0 var(--sidePad);
     display: grid;
     grid-template-columns: 2;
     grid-template-rows: 1;
     gap: 15px;
 }
+
 /*.grid-item{
     background-color: red;
     border: 1px solid white;
 } [used for developing grid] */
 
 @media (max-width: var(--small)) {
-    :root{
+    :root {
         --sidePad: 5px;
         --accentBackground: yellow;
     }
 }
+
 @media (max-width: var(--medium)) {
-    :root{
+    :root {
         --sidePad: 50px;
     }
 }

@@ -40,6 +40,15 @@ h1 {
     border-radius: 15px;
 }
 
+.card-controls {
+    margin: 30px;
+    text-align: center;
+    background-color: card;
+}
+.card-controls button {
+    background-color: var(--card);
+}
+
 .skin {
     max-height: 200px;
 }
@@ -53,6 +62,8 @@ h1 {
     padding-top: 30px;
     padding-bottom: 15px;
     background-color: var(--background);
+    border-radius: 15px;
+    margin: 10px;
 }
 
 .header,

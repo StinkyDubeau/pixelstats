@@ -2,9 +2,7 @@
 
     <div class="content bloc">
         <% if(locals.hypixel){ %>
-            <form action="/" method="get">
-                <button class="btn btn-light" type="submit">Lookup another player</button>
-            </form>
+
 
             <div class="flex-center">
                 <div class="flex-container player-card">
@@ -36,8 +34,15 @@
                     </ul>
 
                 </div>
+
             </div>
+
             <% } %>
+                <div class="card-controls">
+                    <form action="/" method="get">
+                        <button class="btn btn-light" type="submit">Lookup another player</button>
+                    </form>
+                </div>
     </div>
     </div>
 

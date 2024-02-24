@@ -123,11 +123,9 @@ async function getStats(req, res, next) {
           console.log(`${req.uuid} has never joined hypixel. Reverting to default UUID.`);
           url = hypixeApiUrl + fallbackUuid;
           response = await axios.get(url, HYPIXEL_CONFIG);
+        } else {
+          req.hypixel = response.data;
         }
-        req.hypixel = response.data;
-
-        //req.hypixel = response.data.player;
-        //return(response)
       } catch {
         console.log(`An error occured while looking up hypixel stats.`);
       }
@@ -143,6 +141,11 @@ async function getStats(req, res, next) {
 app.get("/", (req, res) => {
   console.log("Loading \"/\"");
   res.render("index.ejs");
+});
+
+app.get("/player/:uuid", (req, res) => {
+  console.log(req.params.uuid);
+  res.redirect("/");
 });
 
 

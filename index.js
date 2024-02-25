@@ -72,9 +72,19 @@ function simplifyJSON(original) { // Simplifies hypixel's JSON into something ea
     {
       username: original.player.displayname,
       rank: removeUnderscores(original.player.newPackageRank),
-      playtime: original.player.timePlaying,
+      playtime: parseInt(original.player.timePlaying / 60), //hours
       firstPlayed: new Date(original.player.firstLogin),
       lastPlayed: new Date(original.player.lastLogout),
+      bedwarsGames:
+        (
+          original.player.stats.Bedwars.games_played_bedwars_1 +
+          original.player.stats.Bedwars.games_played_bedwars +
+          original.player.stats.Bedwars.eight_two_games_played_bedwars +
+          original.player.stats.Bedwars.four_three_games_played_bedwars +
+          original.player.stats.Bedwars.four_four_games_played_bedwars +
+          original.player.stats.Bedwars.two_four_games_played_bedwars
+        ),
+      age: parseInt((new Date() - original.player.firstLogin) / (1000 * 60 * 60 * 24 * 365)),
     }
     return (simplified);
   }

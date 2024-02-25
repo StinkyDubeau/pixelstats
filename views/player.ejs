@@ -1,51 +1,49 @@
 <%- include("./partials/header.ejs") %>
 
-    <div class="content bloc">
-        <% if(locals.hypixel){ %>
+<div class="content bloc">
+  <% if(locals.hypixel){ %>
+  <div class="flex-center">
+    <div class="flex-container player-card card">
 
+      <h2>
+        <!-- Show player name and rank if it exists (e.g. YOUTUBE) -->
+        <% if(hypixel.rank){ %>
+        [<%=hypixel.rank%>] <% }%>
+        <%=hypixel.username%>
+      </h2>
+      <div class="flex-center">
+        <img class="skin" src="https://crafatar.com/renders/body/<%=uuid%>" alt="<%=hypixel.username%>'s minecraft skin" />
+      </div>
+      <p class="uuid">uuid: <%=uuid%>
+      </p>
 
-            <div class="flex-center">
-                <div class="flex-container player-card">
+      <p>Playtime: <%=hypixel.playtime%>
+      </p>
 
-                    <h2> <!-- Show player name and rank if it exists (e.g. YOUTUBE) -->
-                        <% if(hypixel.rank){ %>
-                            [<%=hypixel.rank%>]
-                                <% }%>
-                                    <%=hypixel.username%>
-                    </h2>
-                    <img class="skin" src="https://crafatar.com/renders/body/<%=uuid%>"
-                        alt="<%=hypixel.username%>'s minecraft skin">
-                    <p class="uuid">uuid: <%=uuid%>
-                    </p>
+      <ul>
+        <!-- List of stats found -->
+        <% for (let key in hypixel) { %>
+        <% if (hypixel[key]) { %>
+        <li>
+          <%= key %>: <%= hypixel[key] %>
+        </li>
+        <% } %>
+        <% } %>
+      </ul>
 
-
-                    <p>Playtime: <%=hypixel.playtime%>
-                    </p>
-
-                    <ul>
-                        <!-- List of stats found -->
-                        <% for (let key in hypixel) { %>
-                            <% if (hypixel[key]) { %>
-                                <li>
-                                    <%= key %>: <%= hypixel[key] %>
-                                </li>
-                                <% } %>
-                                    <% } %>
-                    </ul>
-
-                </div>
-
-            </div>
-
-            <% } %>
-                <div class="card-controls">
-                    <form action="/" method="get">
-                        <button class="btn btn-light" type="submit">Lookup another player</button>
-                    </form>
-                </div>
-    </div>
     </div>
 
+  </div>
+
+  <% } %>
+  <div class="card-controls">
+    <form action="/" method="get">
+      <button class="btn btn-light" type="submit">Lookup another player</button>
+    </form>
+  </div>
+</div>
+</div>
 
 
-    <%- include("./partials/footer.ejs") %>
+
+<%- include("./partials/footer.ejs") %>

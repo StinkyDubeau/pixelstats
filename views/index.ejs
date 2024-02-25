@@ -1,46 +1,19 @@
 <%- include("./partials/header.ejs") %>
 
-    <div class="flex-container">
+<div class="flex-container">
 
-        <div class="content bloc">
-            <div class="grid-container">
-                <div class="grid-item">
+  <div class="content bloc">
+    <div class="grid-container">
+      <div class="grid-item">
 
-                    <form action="/userLookup" method="post">
-                        <label for="username">Enter your Minecraft username:</label>
-                        <input id="username" name="username" placeholder="Username or UUID">
-                    </form>
-                </div>
-
-                <div class="grid-item">
-                    <div class="text-area">
-                        <% if(locals.hypixel){ %>
-                            <div class="playercard">
-                                <img class="skin" src="https://crafatar.com/renders/body/<%=uuid%>"
-                                    alt="<%=hypixel.username%>'s minecraft skin">
-                                <p class="uuid">uuid: <%=uuid%>
-                                </p>
-                            </div>
-
-                            <p>Playtime: <%=hypixel.playtime%>
-                            </p>
-
-                            <ul>
-                                <% for (let key in hypixel) { %>
-                                    <% if (hypixel[key]) { %>
-                                        <li>
-                                            <%= key %>: <%= hypixel[key] %>
-                                        </li>
-                                        <% } %>
-                                            <% } %>
-                            </ul>
-                            <% } %>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <form action="/userLookup" method="post">
+          <label for="username">Enter your Minecraft username:</label>
+          <input id="username" name="username" placeholder="Username or UUID">
+        </form>
+      </div>
+    </div>
+  </div>
 
 
 
-        <%- include("./partials/footer.ejs") %>
+  <%- include("./partials/footer.ejs") %>

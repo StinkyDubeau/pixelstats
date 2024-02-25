@@ -8,24 +8,17 @@ dotenv.config();
 const projectName = "PixelStats"
 const app = express();
 const port = process.env.PORT || 3000;
+const hypixelApiKey = process.env.HYPIXEL_KEY;
+
 
 const hypixeApiUrl = "https://api.hypixel.net/v2/player?uuid=";
 const playerDbApiUrl = "https://playerdb.co/api/player/minecraft/";
 
+
+const playerDbConfig = genAPIConfig("playerdb");
+const hypixelApiConfig = genAPIConfig("hypixel", hypixelApiKey);
+
 const fallbackUuid = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // This acts only as a fallback.
-
-const PLAYER_DB_CONFIG = genAPIConfig("playerdb");
-const HYPIXEL_API_KEY = process.env.HYPIXEL_KEY;
-const HYPIXEL_CONFIG = genAPIConfig("hypixel", HYPIXEL_API_KEY);
-
-// Our playerDB calls should have headers like this:
-//
-// const CONFIG = {
-//     headers: {
-//         "API-Key": KEY,
-//         "user-agent": `github.com/stinkydubeau/${PROJECTNAME}`,
-//     }
-// }
 
 app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -50,7 +43,7 @@ function genAPIConfig(apiName, apiKey) {
   };
 }
 
-function removeUnderscores(str) {
+function replaceUnderscoresWithSpaces(str) {
   var newStr = "";
   if (!str) {
     console.log("Cannot remove underscores from empty string!");
@@ -66,15 +59,12 @@ function removeUnderscores(str) {
   return (newStr);
 }
 
-function sumGamesPlayedBedwars(data) {
+function getTotalBedwarsGames(data) {
   let sum = 0;
-
   for (let key in data) {
-      // Check if the key contains "games_played_bedwars"
-      if (key.includes("games_played_bedwars")) {
-          // Add the value associated with the key to the sum
-          sum += data[key];
-      }
+    if (key.includes("games_played_bedwars")) {
+      sum += data[key];
+    }
   }
   return sum;
 }
@@ -84,11 +74,11 @@ function simplifyJSON(original) { // Simplifies hypixel's JSON into something ea
     var simplified =
     {
       username: original.player.displayname,
-      rank: removeUnderscores(original.player.newPackageRank),
+      rank: replaceUnderscoresWithSpaces(original.player.newPackageRank),
       playtime: parseInt(original.player.timePlaying / 60), //hours
       firstPlayed: new Date(original.player.firstLogin),
       lastPlayed: new Date(original.player.lastLogout),
-      bedwarsGames: sumGamesPlayedBedwars(original.player.stats.Bedwars),
+      bedwarsGames: getTotalBedwarsGames(original.player.stats.Bedwars),
       age: parseInt((new Date() - original.player.firstLogin) / (1000 * 60 * 60 * 24 * 365)),
     }
     return (simplified);
@@ -99,25 +89,11 @@ function simplifyJSON(original) { // Simplifies hypixel's JSON into something ea
   }
 }
 
-function validateUUID(uuid) {
-  const Pattern = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4|1][0-9a-fA-F]{3}-[8|9|aA|bB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
-  if (uuid) {
-    if (Pattern.test(uuid)) {
-      return uuid; // Minecraft UUID is valid
-    } else {
-      console.error("Malformed Minecraft UUID. Attempting to fix or using a default UUID.");
-      return fallbackUuid; // Replace with your logic for fixing or default Minecraft UUID
-    }
-  } else {
-    console.log("No UUID");
-  }
-}
-
 async function getUUID(req, res, next) {
   if (req.body.username) {
     try {
       var url = playerDbApiUrl + req.body.username;
-      const response = await axios.get(url, PLAYER_DB_CONFIG);
+      const response = await axios.get(url, playerDbConfig);
       req.uuid = response.data.data.player.id;
     } catch {
       console.log("Username does not exist! Using default uuid.");
@@ -129,15 +105,15 @@ async function getUUID(req, res, next) {
 
 async function getStats(req, res, next) {
   if (req) {
-    if (HYPIXEL_API_KEY) {
+    if (hypixelApiKey) {
       try {
-        var url = hypixeApiUrl + validateUUID(req.uuid);
-        var response = await axios.get(url, HYPIXEL_CONFIG);
+        var url = hypixeApiUrl + req.uuid;
+        var response = await axios.get(url, hypixelApiConfig);
         if (response.data.player == null) {
           // TODO: Log a user-error in the site rather than defaulting to Herobrine.
           console.log(`${req.uuid} has never joined hypixel. Reverting to default UUID.`);
           url = hypixeApiUrl + fallbackUuid;
-          response = await axios.get(url, HYPIXEL_CONFIG);
+          response = await axios.get(url, hypixelApiConfig);
         } else {
           req.hypixel = response.data;
         }
@@ -145,7 +121,7 @@ async function getStats(req, res, next) {
         console.log(`An error occured while looking up hypixel stats.`);
       }
     } else {
-      console.log(`Failed to use key. Is your key ${HYPIXEL_API_KEY}?`);
+      console.log(`Failed to use key. Is your key ${hypixelApiKey}?`);
     }
   } else {
     console.log("Tried to getStats without specifying user.");
@@ -179,6 +155,6 @@ app.post("/userLookup", async (req, res) => {
 
 app.listen(port, (req, res) => {
   console.log(`Welcome to ${projectName}!`);
-  console.log(`Using API key:   ${HYPIXEL_API_KEY}`);
+  console.log(`Using API key:   ${hypixelApiKey}`);
   console.log(`Running on port: ${port}`);
 });

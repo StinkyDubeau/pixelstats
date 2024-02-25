@@ -66,6 +66,19 @@ function removeUnderscores(str) {
   return (newStr);
 }
 
+function sumGamesPlayedBedwars(data) {
+  let sum = 0;
+
+  for (let key in data) {
+      // Check if the key contains "games_played_bedwars"
+      if (key.includes("games_played_bedwars")) {
+          // Add the value associated with the key to the sum
+          sum += data[key];
+      }
+  }
+  return sum;
+}
+
 function simplifyJSON(original) { // Simplifies hypixel's JSON into something easier to work with.
   try {
     var simplified =
@@ -75,15 +88,7 @@ function simplifyJSON(original) { // Simplifies hypixel's JSON into something ea
       playtime: parseInt(original.player.timePlaying / 60), //hours
       firstPlayed: new Date(original.player.firstLogin),
       lastPlayed: new Date(original.player.lastLogout),
-      bedwarsGames:
-        (
-          original.player.stats.Bedwars.games_played_bedwars_1 +
-          original.player.stats.Bedwars.games_played_bedwars +
-          original.player.stats.Bedwars.eight_two_games_played_bedwars +
-          original.player.stats.Bedwars.four_three_games_played_bedwars +
-          original.player.stats.Bedwars.four_four_games_played_bedwars +
-          original.player.stats.Bedwars.two_four_games_played_bedwars
-        ),
+      bedwarsGames: sumGamesPlayedBedwars(original.player.stats.Bedwars),
       age: parseInt((new Date() - original.player.firstLogin) / (1000 * 60 * 60 * 24 * 365)),
     }
     return (simplified);

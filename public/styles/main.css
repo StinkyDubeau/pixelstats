@@ -16,6 +16,13 @@
     --large: 1500px;
 }
 
+input{
+    background-color: rgb(135, 151, 105);
+    border-radius: 15px;
+    border: 0px;
+    padding: 5px;
+}
+
 body {
     color: var(--foreground);
     background-color: var(--accentBackground);
@@ -51,6 +58,7 @@ h1 {
 }
 
 
+
 .skin {
     max-height: 200px;
 }
@@ -61,8 +69,7 @@ h1 {
 }
 
 .content {
-    padding-top: 30px;
-    padding-bottom: 15px;
+    padding: 20px;
     background-color: var(--background);
     border-radius: 15px;
     margin: 10px;
@@ -83,37 +90,10 @@ h1 {
     justify-content: center;
 }
 
-.footer-grid {
-    display: grid;
-    /* grid-template-columns: 3fr 2fr; */
-    /* grid-template-rows: 1fr 1fr; */
-    gap: 10px;
-
-    margin-top: 15px;
-}
-
 .grid-container {
     padding: 0 var(--sidePad);
     display: grid;
     grid-template-columns: 2;
     grid-template-rows: 1;
     gap: 15px;
-}
-
-/*.grid-item{
-    background-color: red;
-    border: 1px solid white;
-} [used for developing grid] */
-
-@media (max-width: var(--small)) {
-    :root {
-        --sidePad: 5px;
-        --accentBackground: yellow;
-    }
-}
-
-@media (max-width: var(--medium)) {
-    :root {
-        --sidePad: 50px;
-    }
 }

@@ -24,6 +24,10 @@ body {
     padding: 0;
 }
 
+button {
+    z-index: 2;
+}
+
 a {
     color: var(--link);
 }
@@ -37,22 +41,15 @@ h1 {
     background-color: var(--card);
     box-shadow: 0px 50px 50px var(--shadow);
     border-radius: 15px;
-}
+    width: 400px;
 
-.player-card {
-    max-width: 400px;
+    padding: 10px 15px;
 }
 
 .card-controls {
-    margin: 30px;
-    text-align: center;
-    background-color: card;
+    margin-top: 15px;
 }
 
-.card-controls button {
-    background-color: var(--card);
-    z-index: 10;
-}
 
 .skin {
     max-height: 200px;

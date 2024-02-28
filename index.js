@@ -4,21 +4,19 @@ import axios from "axios";
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-
+// Project Settings and Environment Variables
 const projectName = "PixelStats"
-const app = express();
+const fallbackUuid = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // Herobrine
 const port = process.env.PORT || 3000;
 const hypixelApiKey = process.env.HYPIXEL_KEY;
 
-
+// API Setup
 const hypixeApiUrl = "https://api.hypixel.net/v2/player?uuid=";
 const playerDbApiUrl = "https://playerdb.co/api/player/minecraft/";
-
-
 const playerDbConfig = genAPIConfig("playerdb");
 const hypixelApiConfig = genAPIConfig("hypixel", hypixelApiKey);
 
-const fallbackUuid = "f84c6a790a4e45e0879bcd49ebd4c4e2"; // This acts only as a fallback.
+const app = express();
 
 app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({ extended: true }));

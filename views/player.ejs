@@ -7,7 +7,10 @@
     <div class="cards">
       <div class="card">
         <div class="flex-card">
-          <img class="headshot" src="https://crafatar.com/renders/body/<%=uuid%>" alt="<%=hypixel.username%>'s minecraft skin" />
+          <img class="headshot" src="https://crafatar.com/renders/body/<%=uuid%>" alt="<%=hypixel.username%>'s minecraft skin">
+            <%- include("./partials/icons/shield.ejs") %>
+          </img>
+            
           <div class="player-stats">
             <h2 class="player-name">
               <!-- Show player name and rank if it exists (e.g. YOUTUBE) -->
@@ -16,7 +19,7 @@
               <%=hypixel.username%>
             </h2>
             <p>Playtime: <%=hypixel.playtime%> hours</p>
-            <p>Account age: <%=hypixel.age%> years</p>
+            <p>Hypixel age: <%=hypixel.age%> years</p>
             <p>Bedwars games: <%=hypixel.bedwarsGames%></p>
             <p class="uuid">uuid: <%=uuid%></p>
 

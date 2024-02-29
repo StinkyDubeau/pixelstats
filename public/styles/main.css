@@ -82,7 +82,9 @@ h1 {
     color: white;
     box-shadow: inset 0px 0px 15px 5px #00000069;
     max-height: 200px;
-
+}
+.age-badge {
+    position: absolute;
 }
 .flex-card {
     display: flex;

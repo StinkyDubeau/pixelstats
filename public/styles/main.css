@@ -14,19 +14,11 @@
     --small: 600px;
     --medium: 1200px;
     --large: 1500px;
+
+    --tinyText: 7pt;
 }
 
-img {
-    padding: 15px;
-    background-color: var(--accentBackground);
-    border-style: none;
-    border-radius: 10px;
-    min-height: 40px;
-    text-align: center;
-    font-size: 1rem;
-    color: white;
-    box-shadow: inset 0px 0px 15px 5px #00000069;
-  }
+
 
 input{
     background-color: rgb(173, 182, 156);
@@ -60,7 +52,10 @@ h1 {
     background-color: var(--card);
     box-shadow: 0px 50px 50px var(--shadow);
     border-radius: 15px;
-    width: 400px;
+    width: 350px;
+
+    display: inline-flex;
+    justify-content: space-between;
 
     padding: 10px 15px;
 }
@@ -69,15 +64,35 @@ h1 {
     margin-top: 15px;
 }
 
-
-
-.skin {
+.uuid {
+    font-size: var(--tinyText);
+    color: gray;
+}
+.player-name{
+    font-family: cursive;
+}
+.headshot {
+    padding: 15px;
+    background-color: var(--accentBackground);
+    border-style: none;
+    border-radius: 10px;
+    min-height: 40px;
+    text-align: center;
+    font-size: 1rem;
+    color: white;
+    box-shadow: inset 0px 0px 15px 5px #00000069;
     max-height: 200px;
+
+}
+.flex-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
 }
 
-.uuid {
-    font-size: 0.8rem;
-    color: gray;
+.player-stats {
+
 }
 
 .content {
@@ -100,6 +115,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 15px;
 }
 
 .grid-container {

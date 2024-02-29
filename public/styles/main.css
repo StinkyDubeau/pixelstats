@@ -16,6 +16,18 @@
     --large: 1500px;
 }
 
+img {
+    padding: 15px;
+    background-color: var(--accentBackground);
+    border-style: none;
+    border-radius: 10px;
+    min-height: 40px;
+    text-align: center;
+    font-size: 1rem;
+    color: white;
+    box-shadow: inset 0px 0px 15px 5px #00000069;
+  }
+
 input{
     background-color: rgb(173, 182, 156);
     border-radius: 15px;

@@ -1,29 +1,27 @@
 <%- include("./partials/header.ejs") %>
 
 <div class="content bloc">
-  <% if(locals.hypixel){ %>
-  <!-- Only render if player loads -->
   <div class="flex-center">
     <div class="cards">
+      <!-- Only render if player loads -->
+      <% if(locals.hypixel){ %>
       <div class="card">
         <div class="flex-card">
-          <img class="headshot" src="https://crafatar.com/renders/body/<%=uuid%>" alt="<%=hypixel.username%>'s minecraft skin">
-            <%- include("./partials/icons/shield.ejs") %>
-          </img>
-            
+
+          <%- include("./partials/icons/shield.ejs") %>
+          <img class="headshot" src="https://crafatar.com/renders/body/<%=uuid%>" alt="<%=hypixel.username%>'s minecraft skin"> </img>
+
           <div class="player-stats">
-            <h2 class="player-name">
-              <!-- Show player name and rank if it exists (e.g. YOUTUBE) -->
-              <% if(hypixel.rank){ %>
-              [<%=hypixel.rank%>] <% }%>
-              <%=hypixel.username%>
-            </h2>
+            <h2 class="player-name"><%=hypixel.username%></h2>
+            <% if(hypixel.rank){ %>
+            <h3>[<%=hypixel.rank%>]</h3>
+            <% }%>
             <p>Playtime: <%=hypixel.playtime%> hours</p>
             <p>Hypixel age: <%=hypixel.age%> years</p>
             <p>Bedwars games: <%=hypixel.bedwarsGames%></p>
             <p class="uuid">uuid: <%=uuid%></p>
 
-          </div>  
+          </div>
         </div>
       </div>
       <% } %>

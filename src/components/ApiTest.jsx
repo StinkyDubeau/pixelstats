@@ -24,12 +24,28 @@ export default function ApiTest(props) {
             .catch((err) => console.error(err));
     }, []);
 
-    function createData(data) {
+    function createEntry(key) {
+        console.log("Creating a key");
+        return (
+            <>
+                <p>{`${key}, ${data[key]}`}</p>
+            </>
+        );
+    }
+
+    function showAllData(data) {
         console.log(`Data: ${data}`);
+
+        // This should be a map but map is not working for some reason.
+        // It's not working because it's an object, not an array. Maybe let's make a function that just blindly converts object to array? I don't really care about the JSON structure, anyways.
+        for (let key in data) {
+            createEntry(key);
+        }
 
         return (
             <>
-                <p>i am data</p>
+                <p>Showing all data...</p>
+                <p>{data.map}</p>
             </>
         );
     }
@@ -41,5 +57,5 @@ export default function ApiTest(props) {
         );
     }
 
-    return <h1>{data ? createData(data) : createLoading()}</h1>;
+    return <h1>{data ? showAllData(data) : createLoading()}</h1>;
 }

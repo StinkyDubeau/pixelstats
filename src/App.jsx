@@ -1,11 +1,12 @@
 import { useState } from "react";
 import ApiTest from "./components/ApiTest";
+import Frame from "./components/Frame";
 
 function App() {
     const [count, setCount] = useState(0);
 
     return (
-        <>
+        <Frame>
             <div className="bg-slate-200">
                 <div className="py-4 px-10">
 
@@ -20,7 +21,7 @@ function App() {
                     </div>
                 </div>
             </div>
-        </>
+        </Frame>
     );
 }
 

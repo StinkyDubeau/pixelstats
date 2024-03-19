@@ -16,20 +16,20 @@ export default function ApiTest(props) {
 
     const [data, setData] = useState(null);
 
-    useEffect(() => {
-        // Fetch data
-        axios
-            .get(url, {
-                headers: {
-                    "Api-Key": key,
-                },
-            })
-            .then((res) => {
-                console.log(res.data.player);
-                setData(res.data.player);
-            })
-            .catch((err) => console.error(err));
-    }, []);
+    // useEffect(() => {
+    //     // Fetch data
+    //     axios
+    //         .get(url, {
+    //             headers: {
+    //                 "Api-Key": key,
+    //             },
+    //         })
+    //         .then((res) => {
+    //             console.log(res.data.player);
+    //             setData(res.data.player);
+    //         })
+    //         .catch((err) => console.error(err));
+    // }, []);
 
     function showAllData(data) {
         return (

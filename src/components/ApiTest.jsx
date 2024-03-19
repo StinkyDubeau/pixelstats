@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { JsonView, allExpanded, darkStyles, defaultStyles } from 'react-json-view-lite';
 import axios from "axios";
 
 export default function ApiTest(props) {
@@ -45,7 +46,7 @@ export default function ApiTest(props) {
         return (
             <>
                 <p>Showing all data...</p>
-                <p>{data.map}</p>
+                <JsonView data={data} shouldExpandNode={allExpanded} style={defaultStyles} />
             </>
         );
     }

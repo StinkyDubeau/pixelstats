@@ -15,7 +15,7 @@ function App() {
 
             <div className="mx-auto">
                 <PlayerCard uuid={import.meta.env.VITE_EXAMPLE_UUID}/>
-                <ApiTest />
+                {/* <ApiTest /> */}
             </div>
         </Frame>
     );

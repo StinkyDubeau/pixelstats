@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import Frame from "./Frame";
-import { JsonView, allExpanded, darkStyles, defaultStyles } from 'react-json-view-lite';
+import {
+    JsonView,
+    allExpanded,
+    darkStyles,
+    defaultStyles,
+} from "react-json-view-lite";
+
 import axios from "axios";
 
 export default function ApiTest(props) {
@@ -26,29 +31,16 @@ export default function ApiTest(props) {
             .catch((err) => console.error(err));
     }, []);
 
-    function createEntry(key) {
-        console.log("Creating a key");
-        return (
-            <>
-                <p>{`${key}, ${data[key]}`}</p>
-            </>
-        );
-    }
-
     function showAllData(data) {
-        console.log(`Data: ${data}`);
-
-        // This should be a map but map is not working for some reason.
-        // It's not working because it's an object, not an array. Maybe let's make a function that just blindly converts object to array? I don't really care about the JSON structure, anyways.
-        for (let key in data) {
-            createEntry(key);
-        }
-
         return (
             <>
-            <div className="bg-blue-500">
-                <JsonView data={data} shouldExpandNode={allExpanded} style={defaultStyles} />
-            </div>
+                <div className="">
+                    <JsonView
+                        data={data}
+                        shouldExpandNode={allExpanded}
+                        style={defaultStyles}
+                    />
+                </div>
             </>
         );
     }
@@ -60,5 +52,11 @@ export default function ApiTest(props) {
         );
     }
 
-    return <h1>{data ? showAllData(data) : createLoading()}</h1>;
+    return (
+        <>
+            <div className="m-auto max-w-lg">
+                <div>{data ? showAllData(data) : createLoading()}</div>
+            </div>
+        </>
+    );
 }
